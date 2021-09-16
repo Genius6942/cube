@@ -12,7 +12,7 @@ class Cube {
 		
 		this.geometry = new BoxBufferGeometry(this.options.size || 2, this.options.size || 2, this.options.size || 2);
 
-		this.material = new MeshStandardMaterial({color: 'red'});
+		this.material = new MeshStandardMaterial({color: this.options.colro || 'red'});
 
 		this.object = new Mesh(this.geometry, this.material);
 
