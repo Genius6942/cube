@@ -3,7 +3,6 @@ import { Object3D } from '/three/three.module.js';
 
 class PointerLockHandler {
 	constructor(element, onRotate = () => {}, unlock = () => false, lock = () => false) {
-		this.isMobile = window.isMobile = window.checkMobile();
 
 		this.element = element;
 

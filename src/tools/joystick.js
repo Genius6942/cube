@@ -1,5 +1,7 @@
 class JoyStick {
-	constructor(location) {
+	constructor (location, onUpdate = () => {}) {
+		this.onUpdate = onUpdate;
+		
 		this.container = document.createElement('div');
 		this.container.style.cssText = `
 			position: absolute;
@@ -44,6 +46,9 @@ class JoyStick {
 		this.fingers = 0;
 		this.location = [0, 0]
 		this.inner.addEventListener('touchstart', this.start.bind(this), true);
+		this.inner.addEventListener('touchmove', this.move.bind(this));
+		this.inner.addEventListener('touchend', this.end.bind(this));
+		this.inner.addEventListener('touchcancel', this.end.bind(this));
 	}
 	start(e) {
 		console.log('start');
@@ -77,14 +82,16 @@ class JoyStick {
 		}
 		this.location[0] += dx;
 		this.location[1] += dy;
+		this.onUpdate(Math.atan2(u(this.inner.style.bottom) + 37.5 - 100, -(u(this.inner.style.right) + 37.5 - 100)));
+		
 	}
 
 	end(e) {
 		console.log('end');
 		this.x = 62.5;
 		this.y = 62.5;
-		this.inner.style.left = `${this.x}px`;
-		this.inner.style.top = `${this.y}px`;
+		this.inner.style.right = `${this.x}px`;
+		this.inner.style.bottom = `${this.y}px`;
 		this.location = [0, 0];
 	}
 }

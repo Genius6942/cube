@@ -6,10 +6,6 @@ class TouchHandler {
 		
 		this.element = element;
 
-		if (window.isMobile || true) {
-			this.joy = window.joy = new JoyStick(document.getElementById('container'));
-		}
-
 		this.location = [0,0];
 
 		this.touchnum = 0;

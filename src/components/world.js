@@ -84,11 +84,6 @@ class World {
 		this.sphere.position.x = 2;
 		this.scene.add(this.sphere);
 		this.scene.add(new THREE.GridHelper(30,30))
-
-		this.joy = new JoyStick('joyDiv');
-		this.joyInterval = setInterval(function () {
-			
-		}.bind(this),60);
 	}
 
 	onViewChange (dX, dY) {
@@ -107,7 +102,7 @@ class World {
 	}
 
 	createControls () {
-		//this.controls = new Controls(this.renderer.domElement, this, this.onViewChange.bind(this), this.onAngleChange);
+		this.controls = new Controls(this.renderer.domElement, this, this.onViewChange.bind(this), this.onAngleChange.bind(this));
 	}
 
 	onKeyDown (e) {

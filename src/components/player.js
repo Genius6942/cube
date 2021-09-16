@@ -46,9 +46,9 @@ class Player extends Object3D {
 		this.speed = this.oSpeed;
 	}
 
-	update () {
+	/*update () {
 		this.move(this.rotation.y - this.angle);
-	}
+	}*/
 
 	move (angle, speed) {
 		this.position.z -= speed * Math.cos(angle);
