@@ -1,7 +1,8 @@
-import PointerLockHandler from './pointerlock.js';
-import TouchHandler from './touchhandler.js';
+import PointerLockHandler from './controls/pointerlock.js';
+import TouchHandler from './controls/touchhandler.js';
 import { MathUtils } from '/three/three.module.js';
-import JoyStick from './joystick.js';
+import JoyStick from './controls/joystick.js';
+import KeyHandler from './controls/keys.js'
 
 class Controls {
 	constructor (element, world, onViewChange = () => {}, onAngleChange = () => {}, onlock = () => {}, onunlock = () => {}) {
@@ -20,9 +21,10 @@ class Controls {
 		
 		this.touchHandler = new TouchHandler(this.canvasElement, this.viewChange.bind(this));
 		this.mouseHandler = new PointerLockHandler(this.canvasElement, this.viewChange.bind(this), onlock, onunlock);
-		if (this.isMobile || true) {
+		if (this.isMobile) {
 			this.joy = window.joy = new JoyStick(document.getElementById('container'), this.angleChange.bind(this));
 		}
+		this.keyHandler = new KeyHandler(this.canvasElement, this.angleChange.bind(this));
 	}
 
 	viewChange (dx, dy) {

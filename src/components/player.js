@@ -15,18 +15,20 @@ class Player extends Object3D {
 
 		this.add(this.body);
 		
-		this.moveAngle = 0;
+		this.angle = 0;
 
 		this.speed = .1;
 		this.oSpeed = this.speed;
 		this.sSpeed = this.speed / Math.sqrt(2);
+
+		this.moving = false;
 
 		this.loader = new GLTFLoader();
 	}
 
 	async load() {
 		await loader.load('/src/assets/player.glb');
-	}
+	}/*
 	update (keys) {
 		if ((keys.up || keys.down) && (keys.right || keys.left)) {
 			this.speed = this.sSpeed;
@@ -44,11 +46,13 @@ class Player extends Object3D {
 			this.move(this.rotation.y - Math.PI / 2, this.speed);
 		}
 		this.speed = this.oSpeed;
-	}
-
-	/*update () {
-		this.move(this.rotation.y - this.angle);
 	}*/
+
+	update () {
+		if (this.moving) {
+			this.move(this.rotation.y + this.angle, this.speed);
+		}
+	}
 
 	move (angle, speed) {
 		this.position.z -= speed * Math.cos(angle);

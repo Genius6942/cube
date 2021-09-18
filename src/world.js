@@ -47,7 +47,7 @@ class World {
 		for (let cube of this.cubes) {
 			cube.add(this.scene);
 		}
-		
+
 		this.player = new Player();
 		this.scene.add(this.player);
 		this.player.add(this.cameraHolder);
@@ -59,10 +59,9 @@ class World {
 
 		this.test();
 
-		this.handleKeys();
-		
-		this.renderer.setAnimationLoop(this.update.bind(this));
+		this.isGoing = false;
 
+		this.start();
 
 		// done loading
 		document.querySelector('.load-cover').style.display = 'none';
@@ -83,101 +82,41 @@ class World {
 		this.sphere = new THREE.Mesh(geometry, material);
 		this.sphere.position.x = 2;
 		this.scene.add(this.sphere);
-		this.scene.add(new THREE.GridHelper(30,30))
+		this.scene.add(new THREE.GridHelper(30, 30))
 	}
 
-	onViewChange (dX, dY) {
+	onViewChange(dX, dY) {
 		this.player.rotation.y -= this.math.degToRad(dX);
 		this.cameraHolder.rotation.x -= this.math.degToRad(dY);
 	}
 
-	onAngleChange (angle) {
-		this.player.angle = angle;
+	onAngleChange(angle) {
+		if (angle === false) {
+			this.player.moving = false;
+			this.player.angle = 0;
+		}
+		else {
+			this.player.angle = angle;
+			this.player.moving = true;
+		}
 	}
 
-	handleKeys () {
-		this.keys = {jumping: false, canjump: true, spaceDown: false};
-		document.addEventListener('keydown', this.onKeyDown.bind(this));
-		document.addEventListener('keyup', this.onKeyUp.bind(this));
-	}
-
-	createControls () {
+	createControls() {
 		this.controls = new Controls(this.renderer.domElement, this, this.onViewChange.bind(this), this.onAngleChange.bind(this));
 	}
 
-	onKeyDown (e) {
-		switch (e.key) {
-			case "ArrowLeft":
-				this.keys.left = true;
-				break;
-			case "ArrowRight":
-				this.keys.right = true;
-				break;
-			case "ArrowUp":
-				this.keys.up = true;
-				break;
-			case "ArrowDown":
-				this.keys.down = true;
-				break;
-			case "a":
-				this.keys.left = true;
-				break;
-			case "d":
-				this.keys.right = true;
-				break;
-			case "w":
-				this.keys.up = true;
-				break;
-			case "s":
-				this.keys.down = true;
-				break;
-			case " ":
-				if (this.keys.spaceDown) {
-					break;
-				}
-				this.keys.spaceDown = true;
-				this.keys.canjump = false;
-				this.keys.jumping = true;
-			
-		}
+	update() {
+		this.player.update();
+		this.renderer.render(this.scene, this.camera);
 	}
 
-	onKeyUp (e) {
-		switch (e.key) {
-			case "ArrowLeft":
-				this.keys.left = false;
-				break;
-			case "ArrowRight":
-				this.keys.right = false;
-				break;
-			case "ArrowUp":
-				this.keys.up = false;
-				break;
-			case "ArrowDown":
-				this.keys.down = false;
-				break;
-			case "a":
-				this.keys.left = false;
-				break;
-			case "d":
-				this.keys.right = false;
-				break;
-			case "w":
-				this.keys.up = false;
-				break;
-			case "s":
-				this.keys.down = false;
-				break;
-		}
+	start() {
+		this.renderer.setAnimationLoop(this.update.bind(this));
+		this.isGoing = true;
 	}
-
-	update () {
-		this.player.update(this.keys);
-		this.renderer.render(this.scene, this.camera);	
-	}
-
-	stop () {
+	stop() {
 		this.renderer.setAnimationLoop(null);
+		this.isGoing = false;
 	}
 }
 

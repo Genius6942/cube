@@ -7,4 +7,14 @@ window.addEventListener('load', function () {
 		return check;
 	};
 	window.world = new World();
+	window.addEventListener('keydown', function (e) {
+		if (e.key == 's' && e.ctrlKey) {
+			e.preventDefault();
+			if (world.isGoing) {
+				world.stop();
+			} else {
+				world.start();
+			}
+		}
+	});
 });

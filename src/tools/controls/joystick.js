@@ -39,6 +39,7 @@ class JoyStick {
 			border: 2px solid black;
 		`
 
+		this.angleChange = Math.PI / 2;
 		this.movementSetup();
 	}
 
@@ -51,7 +52,6 @@ class JoyStick {
 		this.inner.addEventListener('touchcancel', this.end.bind(this));
 	}
 	start(e) {
-		console.log('start');
 		e.preventDefault();
 		this.location = [parseInt(e.changedTouches[0].clientX), parseInt(e.changedTouches[0].clientY)];
 	}
@@ -82,17 +82,26 @@ class JoyStick {
 		}
 		this.location[0] += dx;
 		this.location[1] += dy;
-		this.onUpdate(Math.atan2(u(this.inner.style.bottom) + 37.5 - 100, -(u(this.inner.style.right) + 37.5 - 100)));
+		this.onUpdate(Math.atan2(u(this.inner.style.bottom) + 37.5 - 100, -(u(this.inner.style.right) + 37.5 - 100)) - this.angleChange);
+		/*
+		console.log(Math.sqrt((u(this.inner.style.right) + 37.5-100)**2 + (u(this.inner.style.bottom) + 37.5 - 100)**2));
+		if (Math.sqrt((u(this.inner.style.bottom) + 62.5/2 - 100 )**2 + (u(this.inner.style.right) + 62.5/2 - 100)**2) > 100) {
+			this.location[0] -= dx;
+			this.location[1] -= dy;	
+			this.inner.style.right = s(u(this.inner.style.right) + dx);
+			this.inner.style.bottom = s(u(this.inner.style.bottom) + dy);
+		}*/
 		
 	}
 
 	end(e) {
-		console.log('end');
 		this.x = 62.5;
 		this.y = 62.5;
 		this.inner.style.right = `${this.x}px`;
 		this.inner.style.bottom = `${this.y}px`;
 		this.location = [0, 0];
+
+		this.onUpdate(false);
 	}
 }
 

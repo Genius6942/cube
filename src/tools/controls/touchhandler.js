@@ -16,7 +16,12 @@ class TouchHandler {
 	}
 
 	start (e) {
+		if (this.touchnum != 0) {
+			e.stopPropogation();
+			return;
+		}
 		e.preventDefault();
+		this.element.focus();
 		this.touchnum = 1;
 		this.location = [parseInt(e.changedTouches[0].clientX), parseInt(e.changedTouches[0].clientY)];
 	}
