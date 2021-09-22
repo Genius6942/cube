@@ -4,7 +4,7 @@ import {
 	BoxBufferGeometry,
 	Mesh,
 	MeshStandardMaterial,
-} from '/three/three.module.js';
+} from '../../three/three.module.js';
 
 class Cube {
 	constructor (options) {

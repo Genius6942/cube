@@ -1,6 +1,6 @@
 import PointerLockHandler from './controls/pointerlock.js';
 import TouchHandler from './controls/touchhandler.js';
-import { MathUtils } from '/three/three.module.js';
+import { MathUtils } from '../../three/three.module.js';
 import JoyStick from './controls/joystick.js';
 import KeyHandler from './controls/keys.js'
 
