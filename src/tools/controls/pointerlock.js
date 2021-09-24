@@ -1,6 +1,3 @@
-import TouchHandler from './touchhandler.js';
-import { Object3D } from '/three/three.module.js';
-
 class PointerLockHandler {
 	constructor(element, onRotate = () => {}, unlock = () => false, lock = () => false) {
 
@@ -9,8 +6,6 @@ class PointerLockHandler {
 		this.element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock;
 
 		this.onRotate = onRotate;
-
-		this.sensitivity = .3;
 
 		this.unlock = unlock; this.lock = lock;
 
@@ -50,7 +45,7 @@ class PointerLockHandler {
 		let dX = this.mouseCoordinates[0] - e.clientX;
 		let dY = this.mouseCoordinates[1] - e.clientY;
 
-		this.onRotate(e.movementX * this.sensitivity, e.movementY * this.sensitivity);
+		this.onRotate(e.movementX, e.movementY);
 
 		// Reset
 		this.mouseCoordinates = [e.clientX, e.clientY];
