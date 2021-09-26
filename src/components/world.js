@@ -4,7 +4,8 @@ import Cube from './cube.js';
 import Player from './player.js';
 import Controls from '../tools/controls.js';
 import Floor from './floor.js';
-import Stats from './stats.js';
+import Stats from './stats.js'; // stats.js by mrdoob
+import Camera from './camera.js';
 
 class World {
 	constructor() {
@@ -25,10 +26,13 @@ class World {
 		this.scene = new THREE.Scene();
 		this.scene.background = new THREE.Color('white');
 
-		this.camera = new THREE.PerspectiveCamera(35, 1, .1, 100);
+		this.camera = new Camera();
 		this.cameraHolder = new THREE.Object3D();
-		this.camera.position.set(0, 0, 10);
-		this.cameraHolder.add(this.camera);
+		this.camera.camera.position.set(0, 0, 10);
+		this.cameraHolder.add(this.camera.camera);
+		this.cameraHolderX = new THREE.Object3D();
+		this.cameraHolderX.add(this.cameraHolder);
+		this.scene.add(this.cameraHolderX);
 
 		this.stats = new Stats();
 		this.container.appendChild(this.stats.domElement);
@@ -73,8 +77,8 @@ class World {
 
 		this.player = new Player();
 		this.scene.add(this.player);
-		this.player.add(this.cameraHolder);
 		this.player.position.y += .35;
+		this.world.addBody(this.player.body);
 
 		//this.rotater = new PointerLockHandler(this.renderer.domElement, this.camera, this.onViewChange.bind(this), this.cameraHolder);
 
@@ -93,8 +97,8 @@ class World {
 	}
 
 	resize() {
-		this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
-		this.camera.updateProjectionMatrix();
+		this.camera.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+		this.camera.camera.updateProjectionMatrix();
 
 		this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -114,11 +118,13 @@ class World {
 		this.sphere.body.position.set(4, 5, 0);
 		this.sphere.update = function () {
 			if (this.body.position.y < -50) {
-				this.body.position.y = 5;
+				this.body.position.set( 4, 5, 0 );
+				this.body.velocity.set(0, 0, 0);
 			}
 			this.position.copy (this.body.position);
 			this.quaternion.copy(this.body.quaternion);
 		}.bind(this.sphere);
+		this.sphere.body.velocity.x = -1;
 
 		this.gridHelper = new THREE.GridHelper(100,100);
 		this.scene.add(this.gridHelper);
@@ -127,6 +133,7 @@ class World {
 	onViewChange(dX, dY) {
 		this.player.rotation.y -= this.math.degToRad(dX);
 		this.cameraHolder.rotation.x -= this.math.degToRad(dY);
+		this.cameraHolderX.rotation.y -= this.math.degToRad(dX);
 	}
 
 	onAngleChange(angle) {
@@ -145,10 +152,11 @@ class World {
 	}
 
 	update() {
-		this.player.update();
+		this.player.update(this.cameraHolderX.rotation.y, this.cameraHolder.rotation.x);
 		this.sphere.update();
 		this.updatePhysics();
-		this.renderer.render(this.scene, this.camera);
+		this.cameraHolderX.position.copy(this.player.position);
+		this.renderer.render(this.scene, this.camera.camera);
 		this.stats.update();
 	}
 

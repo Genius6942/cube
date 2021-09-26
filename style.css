@@ -44,3 +44,49 @@ html, body {overflow: hidden}
 	align-items: center;
 	font-size: 3vw;
 }
+
+.error {
+	width: 500px;
+	min-height: 300px;
+	position: absolute;
+	background: rgba(0, 0, 0, .4);
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 101;
+	backdrop-filter: blur(5px);
+	color: red;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-family: "Comfortaa";
+	font-size: 20px;
+	font-weight: bold;
+	display: none;
+}
+.error.open {
+	display: flex;
+}
+
+.error #btn {
+	border: 2px solid gray;
+	padding: 10px;
+	display: inline-block;
+	background: blue;
+	color: #00ff00;
+	cursor: pointer;
+	border-radius: 9px;
+	margin-top: 5px;
+}
+
+.error #err {
+	margin-top: 10px;
+	background: rgba(1, 1, 1, .2);
+	font-size: 15px;
+	overflow: auto;
+	display: none;
+}
+
+.error #err.open {
+	display: block;
+}

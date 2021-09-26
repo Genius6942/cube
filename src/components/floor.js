@@ -16,7 +16,7 @@ class Floor extends Mesh {
 		this.material = new MeshStandardMaterial({color: color});
 		this.geometry = new BoxBufferGeometry(width, .5, height);
 
-		this.body = new Body({ mass: 0, shape: new Box(new Vec3(width, .5, height)), material: contactMaterial });
+		this.body = new Body({ mass: 0, shape: new Box(new Vec3(width / 2, .5, height / 2)), material: contactMaterial });
 		this.body.position.set(0, -.5, 0);
 		this.position.y = this.body.position.y + .25;
 	}

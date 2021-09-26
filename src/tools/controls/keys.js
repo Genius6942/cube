@@ -14,6 +14,7 @@ class KeyHandler {
 	}
 
 	onKeyDown(e) {
+		if (e.repeat) return;
 		switch (e.key) {
 			case "ArrowLeft":
 				this.keys.left = true;
@@ -45,6 +46,7 @@ class KeyHandler {
 	}
 
 	onKeyUp(e) {
+		if (e.repeat) return;
 		switch (e.key) {
 			case "ArrowLeft":
 				this.keys.left = false;
