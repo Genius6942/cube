@@ -1,1 +1,1 @@
-press run to play
+there are no cubes in this game :P

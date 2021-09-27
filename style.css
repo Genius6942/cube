@@ -90,3 +90,19 @@ html, body {overflow: hidden}
 .error #err.open {
 	display: block;
 }
+
+#notice {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+	font-family: "Comfortaa";
+	z-index: 105;
+	color: white;
+	padding: 5px;
+	background-color: black;
+}
+
+#notice:not([data-active = "true"]) {
+	display: none;
+}

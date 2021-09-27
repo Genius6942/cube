@@ -6,6 +6,7 @@ import Controls from '../tools/controls.js';
 import Floor from './floor.js';
 import Stats from './stats.js'; // stats.js by mrdoob
 import Camera from './camera.js';
+import Ball from './ball.js';
 
 class World {
 	constructor() {
@@ -49,13 +50,13 @@ class World {
 		this.lights[0].castShadow = true;
 		let light = this.lights[0];
 
-        light.shadow.camera.near = 10
-        light.shadow.camera.far = 100
-        light.shadow.camera.fov = 30
+		light.shadow.camera.near = 10
+		light.shadow.camera.far = 100
+		light.shadow.camera.fov = 30
 
-        // light.shadow.bias = -0.0001
-        light.shadow.mapSize.width = 2048
-        light.shadow.mapSize.height = 2048
+		// light.shadow.bias = -0.0001
+		light.shadow.mapSize.width = 2048
+		light.shadow.mapSize.height = 2048
 		this.lights.forEach(function (light) {
 			this.scene.add(light);
 		}.bind(this));
@@ -106,6 +107,7 @@ class World {
 
 
 	test() {
+		/*
 		const geometry = new THREE.SphereGeometry(1, 32, 16);
 		const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
 		this.sphere = new THREE.Mesh(geometry, material);
@@ -125,15 +127,26 @@ class World {
 			this.quaternion.copy(this.body.quaternion);
 		}.bind(this.sphere);
 		this.sphere.body.velocity.x = -1;
+		*/
 
-		this.gridHelper = new THREE.GridHelper(100,100);
+		this.gridHelper = new THREE.GridHelper(100, 100);
 		this.scene.add(this.gridHelper);
+
+		const ballnum = 4;
+		this.balls = [];
+		for (let i = 0; i < ballnum; i++) {
+			const ball = new Ball();
+			this.scene.add(ball);
+			this.world.addBody(ball.body);
+			this.balls.push(ball);
+		}
 	}
 
 	onViewChange(dX, dY) {
 		this.player.rotation.y -= this.math.degToRad(dX);
 		this.cameraHolder.rotation.x -= this.math.degToRad(dY);
 		this.cameraHolderX.rotation.y -= this.math.degToRad(dX);
+		this.cameraHolder.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.cameraHolder.rotation.x))
 	}
 
 	onAngleChange(angle) {
@@ -153,7 +166,7 @@ class World {
 
 	update() {
 		this.player.update(this.cameraHolderX.rotation.y, this.cameraHolder.rotation.x);
-		this.sphere.update();
+		this.balls.forEach((x) => x.update());
 		this.updatePhysics();
 		this.cameraHolderX.position.copy(this.player.position);
 		this.renderer.render(this.scene, this.camera.camera);
@@ -169,15 +182,15 @@ class World {
 		this.isGoing = false;
 	}
 
-	createContactMaterial (friction = 0, restitution = 0) {
+	createContactMaterial(friction = 0, restitution = 0) {
 		return new CANNON.ContactMaterial(new CANNON.Material('physics'), new CANNON.Material('physics'), {
 			friction: restitution,
 			restitution: restitution,
 		});
 	}
 
-	initPhysics () {
-		this.world = new CANNON.World({gravity: new CANNON.Vec3(0, -9.8, 0)});
+	initPhysics() {
+		this.world = new CANNON.World({ gravity: new CANNON.Vec3(0, -1, 0) });
 
 		this.contactMaterial = this.createContactMaterial(.5, .5);
 
@@ -188,11 +201,16 @@ class World {
 		this.timeStep = 1 / 60;
 
 		this.lastCallTime = performance.now();
+
+		//test
+
+		//setInterval(() => world.onViewChange(.1, 0), 2);
 	}
 
-	updatePhysics () {
+	updatePhysics() {
 		const time = performance.now();
 		this.world.step(this.timeStep, time - this.lastCallTime);
+		this.lastCallTime = time;
 	}
 }
 

@@ -16,7 +16,7 @@ import {
 } from '../../cannon/cannon-es.js';
 
 class Player extends Object3D {
-	constructor() {
+	constructor(material) {
 		super();
 
 		this.textureLoader = new TextureLoader();
@@ -46,11 +46,11 @@ class Player extends Object3D {
 
 		this.add(this.mesh);
 
-		this.angle = 0;
+		this.realAngle = 0;
 
 		this.moving = false;
 
-		this.initPhysics();
+		this.initPhysics(material);
 
 		document.addEventListener('keydown', function (e) {
 			if (!e.repeat && e.key == ' ') {
@@ -59,7 +59,12 @@ class Player extends Object3D {
 		}.bind(this));
 	}
 
+	set angle(value) {
+		this.realAngle = value < 0 ? Math.PI * 2 + value : value;
+	}
+
 	update(rX, rY) {
+		// document.getElementById('notice').innerHTML = `x : ${Math.round(rX * 10) / 10}, y : ${Math.round(rY * 10000) / 10000}`;
 		this.inputVelocity.set(0, 0, 0);
 
 		this.euler.x = rY;
@@ -68,19 +73,29 @@ class Player extends Object3D {
 		this.quaternion.setFromEuler(this.euler);
 
 		if (this.moving) {
-			this.move(this.rotation.y + this.angle, this.speed);
+			this.move(rX + this.realAngle, this.speed);
+		} else {
+			this.velocity.x = 0;
+			this.velocity.z = 0;
 		}
 
+		if (this.position.y < this.resetHeight) {
+			this.reset();
+		}
 		this.position.copy(this.body.position);
 		this.quaternion.copy(this.body.quaternion);
-		this.position.y += .35;
-		//console.log(this.body.position.x, this.body.position.z);
 	}
 
-	jump () {
+	reset() {
+		this.body.velocity.set(0, 0, 0);
+		this.body.position.set(0, 5, 0);
+	}
+
+	jump() {
 		if (this.canJump) {
 			this.body.velocity.y = this.jumpSpeed;
 		}
+		this.canJump = false;
 	}
 
 	move(angle, speed) {
@@ -91,12 +106,12 @@ class Player extends Object3D {
 
 		this.body.velocity.z = this.inputVelocity.z;
 		this.body.velocity.x = this.inputVelocity.x;
-
-		console.log(this.body.position.x, this.body.position.z, this.body.position.y);
 	}
 
-	initPhysics() {
-		this.body = new Body(5, new Sphere(.35));
+	initPhysics(material) {
+		this.resetHeight = -30;
+
+		this.body = new Body({ mass: 5, shape: new Sphere(.35), material: material });
 
 		this.body.position.set(0, 5, 0);
 
@@ -105,9 +120,9 @@ class Player extends Object3D {
 		this.inputVelocity = new Vector3();
 		this.euler = new Euler();
 
-		this.speed = .1;
+		this.speed = .7;
 		this.oSpeed = this.speed;
-		this.jumpSpeed = 5;
+		this.jumpSpeed = 3;
 
 		this.qn = new Quaternion();
 
@@ -134,6 +149,7 @@ class Player extends Object3D {
 		});
 
 		this.canJump = false;
+
 	}
 }
 
