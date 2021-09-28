@@ -1,0 +1,25 @@
+{
+  "name": "sphere",
+  "version": "1.0.0",
+  "description": "an io game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Genius6942/cube.git"
+  },
+  "author": "mathmanjosh@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Genius6942/cube/issues"
+  },
+  "homepage": "https://github.com/Genius6942/cube#readme",
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "express": "^4.17.1",
+    "socket.io": "^4.2.0"
+  }
+}

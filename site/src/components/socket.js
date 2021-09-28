@@ -1,0 +1,1 @@
+window.socket = io.connect(window.location.href, {});
