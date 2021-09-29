@@ -29,3 +29,9 @@ try {
 	console.error(e);
 	document.querySelector('.error').classList.add('open');
 }
+
+window.addEventListener('error', (event) => {
+    log.textContent = log.textContent + `${event.type}: ${event.message}\n`;
+    if (location.href.includes('sphere')) alert(`${event.type}: ${event.message}\n`);
+	
+});

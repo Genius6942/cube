@@ -86,8 +86,14 @@ class World {
 
 		this.start();
 
+		this.setupSocket();
+
 		// done loading
 		document.querySelector('.load-cover').style.display = 'none';
+	}
+
+	setupSocket() {
+
 	}
 
 	resize() {
@@ -125,7 +131,7 @@ class World {
 		this.gridHelper = new THREE.GridHelper(100, 100);
 		this.scene.add(this.gridHelper);
 
-		const ballnum = 4;
+		const ballnum = 15;
 		this.balls = [];
 		for (let i = 0; i < ballnum; i++) {
 			const ball = new Ball();
@@ -194,10 +200,6 @@ class World {
 		this.timeStep = 1 / 60;
 
 		this.lastCallTime = performance.now();
-
-		//test
-
-		//setInterval(() => world.onViewChange(.1, 0), 2);
 	}
 
 	updatePhysics() {

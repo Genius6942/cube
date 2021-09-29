@@ -2,8 +2,6 @@
 <html>
 
 <head>
-	<script src = './socket.io/socket.io.js'></script>
-	<script src = './components/socket.js'></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<title>thingy</title>
@@ -11,7 +9,10 @@
 	<script type='module' src='./src/main.js'></script>
 </head>
 
-<body>
+<body onload="document.getElementById('color').value = '#' + Math.floor(Math.random()*16777215).toString(16)">
+	<script src='https://cdn.socket.io/4.1.2/socket.io.js'>
+
+	</script>
 	<div class='load-cover'>
 		<iframe src="https://genius6942.github.io/loader/" style='width: 50%; height: 50%; border: none;'>
 		</iframe>
@@ -24,6 +25,14 @@
 		</div>
 	</div>
 	<div id='container'>
+		<div id = 'start-panel'>
+			<label for="color">
+				Choose a color
+			</label>
+			<input type = 'color' id="color"></input>
+			<button id = 'join'>go</button>
+		</div>
+
 		<div class="rotate-cover">
 			<div class='text'>
 				This game needs your screen to be horizontal.<br>Please rotate your screen.
@@ -31,7 +40,9 @@
 		</div>
 		<div id="notice" data-active="false">
 		</div>
+		<div id = 'ping'>hey</div>
 	</div>
+	<script src = './src/components/socket.js'></script>
 </body>
 
 </html>
