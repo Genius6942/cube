@@ -1,4 +1,4 @@
-import World from './components/world.js';
+import World from './components/worldy.js';
 try {
 	document.querySelector('.error #btn').onclick = () => {document.querySelector('.error #err').classList.toggle('open')};
 	console.log('yay');
